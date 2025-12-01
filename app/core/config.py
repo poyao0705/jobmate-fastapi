@@ -1,7 +1,10 @@
-import os
-from dotenv import load_dotenv
+from pydantic_settings import BaseSettings
 
-load_dotenv()
-# TODO: sample usage
-# DATABASE_URL = os.getenv("DATABASE_URL")
-# SECRET_KEY = os.getenv("SECRET_KEY")
+class Settings(BaseSettings):
+    AUTH0_DOMAIN: str
+    AUTH0_AUDIENCE: str
+    
+    class Config:
+        env_file = ".env"
+
+settings = Settings()
