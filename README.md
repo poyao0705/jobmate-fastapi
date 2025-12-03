@@ -1,5 +1,8 @@
 # jobmate-fastapi
 
+A rework of jobmate backend using FastAPI.
+Reference repo: https://github.com/poyao0705/jobmate-backend
+
 ## Execute the project
 
 ```bash
