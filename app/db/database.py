@@ -1,8 +1,37 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from contextlib import asynccontextmanager
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlmodel import SQLModel
+from sqlmodel.ext.asyncio.session import AsyncSession
+from fastapi import FastAPI
 from app.core.config import settings
-# TODO: define database url in .env file
-engine = create_engine(settings.DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+
+
+engine_kwargs = {
+    "pool_size": 10,
+    "max_overflow": 20,
+    "pool_timeout": 30,
+    "pool_recycle": 1800,
+    "pool_pre_ping": True,
+}
+
+database_url = settings.DATABASE_URL
+
+engine = create_async_engine(database_url, **engine_kwargs)
+
+AsyncSessionLocal = async_sessionmaker(
+    autoflush=False,
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
+)
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    """Lifespan function for FastAPI application."""
+    yield
+    await engine.dispose()
+
+
+class Base(SQLModel):
+    pass

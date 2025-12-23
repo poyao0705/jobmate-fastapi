@@ -1,6 +1,11 @@
-# TODO: sample usage
-# def upload_resume(db: Session = Depends(get_db)):
-#     return upload_resume(db)
+from sqlmodel.ext.asyncio.session import AsyncSession
 
-# def get_resume(db: Session = Depends(get_db)):
-#     return get_resume(db)
+
+async def upload_resume(db: AsyncSession):
+    # TODO: implement
+    return {"message": "Resume uploaded successfully (placeholder)"}
+
+
+async def get_resume(db: AsyncSession):
+    # TODO: implement
+    return {"message": "Resume retrieved successfully (placeholder)"}

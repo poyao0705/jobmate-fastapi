@@ -1,11 +1,11 @@
-from sqlalchemy.orm import Session
-# This is the shared dependency script, such as database connection
-from app.db.database import SessionLocal
+from typing import AsyncGenerator
+from sqlmodel.ext.asyncio.session import AsyncSession
 
-def get_db():
-    """Get a database session."""
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# This is the shared dependency script, such as database connection
+from app.db.database import AsyncSessionLocal
+
+
+async def get_db() -> AsyncGenerator[AsyncSession, None]:
+    """Get database session"""
+    async with AsyncSessionLocal() as session:
+        yield session

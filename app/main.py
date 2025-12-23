@@ -1,12 +1,12 @@
 from fastapi import FastAPI
+from app.routers import resumes
+from app.db.database import lifespan
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
+
+app.include_router(resumes.router)
+
 
 @app.get("/")
-def main():
-    return "Hello from jobmate-fastapi!"
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+async def main():
+    return {"message": "Hello from jobmate-fastapi!"}

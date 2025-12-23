@@ -1,16 +1,19 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-# from app.services.resume_service import upload_resume, get_resume
-# from app.dependencies import get_db
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+from app.services.resume_services import upload_resume, get_resume
+from app.dependencies import get_db
+
 router = APIRouter(prefix="/resumes", tags=["resumes"])
 
-# TODO: sample usage
-# @router.post("/")
-# def upload_user_resume(db: Session = Depends(get_db)):
-#     """Upload a resume."""
-#     return upload_resume(db)
 
-# @router.get("/")
-# def get_user_resume(db: Session = Depends(get_db)):
-#     """Get a resume."""
-#     return get_resume(db)
+@router.post("/")
+async def upload_user_resume(db: AsyncSession = Depends(get_db)):
+    """Upload a resume."""
+    return await upload_resume(db)
+
+
+@router.get("/")
+async def get_user_resume(db: AsyncSession = Depends(get_db)):
+    """Get a resume."""
+    return await get_resume(db)
