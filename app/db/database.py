@@ -31,7 +31,3 @@ async def lifespan(_app: FastAPI):
     """Lifespan function for FastAPI application."""
     yield
     await engine.dispose()
-
-
-class Base(SQLModel):
-    pass
